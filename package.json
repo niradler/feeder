@@ -7,7 +7,9 @@
     "watch": "nodemon -e js --exec \"npm run start\"",
     "start": "statikly start -a plugins --level info",
     "prisma": "prisma",
-    "statikly": "statikly"
+    "studio": "prisma studio",
+    "statikly": "statikly",
+    "migrate": "prisma migrate dev"
   },
   "keywords": [],
   "author": "",
