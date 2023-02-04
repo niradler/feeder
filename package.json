@@ -1,0 +1,31 @@
+{
+  "name": "feeder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "nodemon -e js --exec \"npm run start\"",
+    "start": "statikly start -a plugins --level info",
+    "prisma": "prisma",
+    "statikly": "statikly"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@statikly-stack/cli": "^0.0.8",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@fastify/caching": "^8.2.0",
+    "@fastify/swagger": "^8.3.1",
+    "@prisma/client": "^4.9.0",
+    "@statikly-stack/core": "^0.0.9",
+    "@statikly-stack/render": "^0.0.1",
+    "dayjs": "^1.11.7",
+    "fastify-sse-v2": "^3.0.0",
+    "fluent-json-schema": "^4.0.0",
+    "htmx.org": "^1.8.5",
+    "prisma": "^4.9.0"
+  }
+}
