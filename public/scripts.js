@@ -10,3 +10,10 @@ const theme = localStorage.getItem('theme');
 if (theme) {
     document.querySelector('html').setAttribute('data-theme', theme);
 }
+
+
+const queryParams = new URLSearchParams(window.location.search)
+const searchQuery = queryParams.get('search') || "";
+if (searchQuery) {
+    htmx.find("#search-input").value = searchQuery;
+}

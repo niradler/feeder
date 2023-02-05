@@ -6,10 +6,13 @@
   "scripts": {
     "watch": "nodemon -e js --exec \"npm run start\"",
     "start": "statikly start -a plugins --level info",
-    "prisma": "prisma",
-    "studio": "prisma studio",
     "statikly": "statikly",
-    "migrate": "prisma migrate dev"
+    "prisma": "prisma",
+    "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate",
+    "prisma:dev": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "docker-push": "docker buildx build --platform linux/arm64,linux/amd64 --no-cache -t niradler/feeder . --push"
   },
   "keywords": [],
   "author": "",
