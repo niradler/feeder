@@ -1,8 +1,8 @@
 const { all } = fromRoot.require('components/alerts');
-const { htmlFragment } = require('@statikly-stack/render')
+const { htmlFragment, renderIf } = require('@statikly-stack/render')
+const { pageSize } = require('data.json');
 
 async function post(req, res) {
-    const pageSize = 20
     const alerts = await this.db.alert.findMany({
         take: pageSize,
         orderBy: [
@@ -33,14 +33,17 @@ async function post(req, res) {
     })
 
     res.type('text/html');
-    res.header('HX-Push', `/?search=${req.body.search}`)
+    res.header('HX-Push', `/?search=${req.body.search}&page=1`)
 
     return htmlFragment`
     ${all({ alerts })}
-    <div class="flex justify-center" id="more-results">
-        <button class="btn" hx-get="/?page=1" hx-trigger="click" hx-target="#more-results"
+    ${renderIf(alerts.length === pageSize,
+        htmlFragment`
+        <div class="flex justify-center" id="more-results">
+        <button class="btn" hx-get="/?page=2" hx-trigger="click" hx-target="#more-results"
             hx-swap="outerHTML">Load More</button>
     </div>
+    `)}
     `;
 }
 

@@ -2,6 +2,7 @@
     "title": "FEEDER",
     "pageLogo": "FEEDER",
     "defaultTheme": "dark",
+    "pageSize": 20,
     "links": [],
     "themes": [
         "light",

@@ -3,7 +3,7 @@ FROM niradler/statikly
 WORKDIR /usr/src/app
 
 USER root
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl
 
 COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 RUN npm install --production --silent

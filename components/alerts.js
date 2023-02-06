@@ -1,4 +1,4 @@
-const { htmlFragment } = require('@statikly-stack/render')
+const { htmlFragment, renderIf, renderList } = require('@statikly-stack/render')
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime)
@@ -22,7 +22,7 @@ const textWithLimit = (text, limit) => {
 const groupAlert = (alert) => {
     return htmlFragment`
     <ul class="steps mt-3">
-        ${Array.isArray(alert.alerts) && alert.alerts.map(alert => htmlFragment`
+        ${renderIf(Array.isArray(alert.alerts), () => alert.alerts.map(alert => htmlFragment`
         <div tabindex="0" class="collapse">
             <div class="collapse-title text-xl font-medium">
                 <li class="step step-primary">${textWithLimit(alert.title, titleLength)}</li>
@@ -31,7 +31,7 @@ const groupAlert = (alert) => {
                 ${basicAlert(alert)}
             </div>
         </div>
-        `)}
+        `))}
     </ul>
     `
 }
@@ -53,24 +53,21 @@ const basicAlert = (alert) => {
                     </div>
                 </div>
                 <div class="flex-none">
-                    <span class="badge">${dayjs(alert.createdAt).fromNow()}</span>
-                    ${alert.action && htmlFragment`
-    
+                    <span class="badge">${dayjs(alert.timestamp).fromNow()}</span>
+                    ${renderIf(alert.action, htmlFragment`
                     <form action="${alert.action}" method="${alert.actionMethod || 'post'}">
                         <input type="hidden" name="id" value="${alert.id}" />
                         <button type="submit" class="btn btn-sm">Response</button>
-    
                     </form>
-    
-                    `}
+                    `)}
                 </div>
     
             </div>
         </div>
         <div class="collapse-content">
             <p>${alert.description}</p>
-            <span class="badge">id=${alert.id}</span> <span class="badge">createdAt=${alert.createdAt}</span>
-            ${alert.tags && alert.tags.split(',').map(tag => htmlFragment`<span class="badge">tag=${tag}</span>`)}
+            ${renderList(Object.keys(alert).filter(key => alert[key] && key != 'tags' && key != 'description'), (key) => htmlFragment`<span class="badge">${key}=${alert[key]}</span>`)}            
+            ${renderIf(alert.tags, (tags) => tags.split(',').map(tag => htmlFragment`<span class="badge">tag=${tag}</span>`))}
         </div>
     </div>
     `
@@ -94,10 +91,7 @@ const empty = () => {
 }
 
 const all = ({ alerts }) => {
-    if (Array.isArray(alerts) && alerts.length > 0) {
-        return alerts.map(alert => alert.groupId ? groupAlert(alert) : basicAlert(alert));
-    }
-    return empty();
+    return renderList(alerts, (alert) => basicAlert(alert), empty())
 }
 
 module.exports = {

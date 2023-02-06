@@ -1,5 +1,6 @@
 const S = require('fluent-json-schema')
 const { alertsEmitter } = fromRoot.require('src/events');
+const { verifyApiKey } = fromRoot.require('src/auth');
 
 async function handler(req, res) {
     try {
@@ -33,6 +34,7 @@ const schema = {
 const route = {
     method: "POST",
     schema,
+    preHandler: verifyApiKey,
     handler
 }
 

@@ -1,7 +1,9 @@
 const { html } = require('@statikly-stack/render')
 const footer = require('./footer')
 const header = require('./header')
-const context = require('../data.json');
+const context = require('data.json');
+
+const isDev = process.env.NODE_ENV !== 'production';
 
 module.exports = ({ body }) => {
     return html`
@@ -18,12 +20,12 @@ module.exports = ({ body }) => {
     <meta name="description" content="${context.title}" />
     <link rel="icon" type="image/png" href="/public/assets/fav.png" />
     <title>${context.title}</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.43.0/dist/full.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+    <link href="/public/css/daisyui.css" rel="stylesheet" type="text/css" />
+    <link href="/public/css/tailwind.min.css" rel="stylesheet" type="text/css" />
     <script src="/assets?asset=htmx.org/dist/htmx.js"></script>
     <script src="/assets?asset=htmx.org/dist/ext/sse.js"></script>
-    <script src="/public/scripts.js" defer></script>
-    <script src="/public/debug.js" defer></script>
+    <script src="/public/js/scripts.js" defer></script>
+    <script src="/public/js/debug.js" defer></script>
 </head>
 
 <body class="container mx-auto">

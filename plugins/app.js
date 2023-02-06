@@ -2,6 +2,7 @@ const { plugin } = require('@statikly-stack/core')
 const { FastifySSEPlugin } = require('fastify-sse-v2');
 const client = fromRoot.require('src/db/client');
 
+
 module.exports = plugin(async function (app, options) {
     const { expiresIn = 300, serverExpiresIn = 300 } = options
     await app.register(require('@fastify/caching'), {
@@ -18,6 +19,8 @@ module.exports = plugin(async function (app, options) {
     await app.register(FastifySSEPlugin);
     app.ready().then(() => app.swagger())
     app.decorate("db", client)
+
+    global.feederApp = app;
     app.log.debug("app loaded successfully");
 })
 
