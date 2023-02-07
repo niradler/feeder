@@ -24,7 +24,7 @@ services:
             - 3111:3000
 ```
 
-Add some alerts
+Add some alerts:
 
 ```sh
 curl --location --request POST 'http://localhost:3111/webhook' \
@@ -36,31 +36,31 @@ curl --location --request POST 'http://localhost:3111/webhook' \
     "level":"error"
 }'
 ```
+
 Available Alert fields:
 
-- `title` - The title of the alert
-- `description` - The description of the alert 
-- `level` - The level of the alert, can be empty/error/warning/info
-- `action` - The form action for the alert (trigger by the response button, see image above)
-- `actionMethod` - The form method for the alert, default to `POST`
-- `timestamp` - The timestamp for the alert
-- `tags` - The tags for the alert (experimental)
-- `groupId` - The groupId for the alert (experimental)
-  
+-   `title` - The title of the alert
+-   `description` - The description of the alert
+-   `level` - The level of the alert, can be empty/error/warning/info
+-   `action` - The form action for the alert (trigger by the response button, see image above)
+-   `actionMethod` - The form method for the alert, default to `POST`
+-   `timestamp` - The timestamp for the alert
+-   `tags` - The tags for the alert (experimental)
+-   `groupId` - The groupId for the alert (experimental)
+
 Open the browser and go to localhost:3111
 
 ![homepage](https://github.com/niradler/feeder/blob/main/demo/feeder.png?raw=true)
 
-
 ### Tech Stack
 
-- Statikly
-- htmx
-- tailwind + daisyUI
+-   Statikly
+-   htmx
+-   tailwind + daisyUI
 
 ### TODO:
 
-- socket connection should update the ui instead of requesting to refresh
-- steps ui (consolidate alerts)
-- docker
-- login (not sure if this is needed)
+-   socket connection should update the ui instead of requesting to refresh
+-   steps ui (consolidate alerts)
+-   docker
+-   login (not sure if this is needed)
