@@ -1,6 +1,6 @@
 # Self hosted Feed
 
-consolidate alerts from multiple feeds, use the feeder `/webhook` endpoint to add alerts to the feed.
+Consolidate alerts from multiple feeds, use the feeder `/webhook` endpoint to add alerts to the feed.
 
 ## Usage
 
