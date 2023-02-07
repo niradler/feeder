@@ -56,7 +56,8 @@ Open the browser and go to localhost:3111
 
 ### Tech Stack
 
--   Statikly
+-   Statikly + Fastify
+-   Prisma
 -   htmx
 -   tailwind + daisyUI
 
@@ -67,3 +68,4 @@ Open the browser and go to localhost:3111
 -   docker
 -   login (TBD)
 -   integrations (TBD)
+-   filter by timestamp

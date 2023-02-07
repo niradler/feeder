@@ -12,7 +12,7 @@
     "prisma:generate": "prisma generate",
     "prisma:dev": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
-    "docker-push": "docker buildx build --platform linux/arm64,linux/amd64 --no-cache -t niradler/feeder . --push"
+    "docker-push": "docker buildx build --platform linux/arm64,linux/amd64,windows/amd64 --no-cache -t niradler/feeder . --push"
   },
   "keywords": [],
   "author": "",
@@ -24,13 +24,13 @@
   "dependencies": {
     "@fastify/caching": "^8.2.0",
     "@fastify/swagger": "^8.3.1",
-    "@prisma/client": "^4.9.0",
+    "@prisma/client": "^4.10.0",
     "@statikly-stack/core": "^0.0.11",
     "@statikly-stack/render": "^0.0.3",
     "dayjs": "^1.11.7",
     "fastify-sse-v2": "^3.0.0",
     "fluent-json-schema": "^4.0.0",
     "htmx.org": "^1.8.5",
-    "prisma": "^4.9.0"
+    "prisma": "^4.10.0"
   }
 }
