@@ -9,5 +9,5 @@ module.exports = () => {
                     href="https://github.com/niradler/feeder" target="_blank">niradler/feeder</a></p>
         </div>
     </footer>
-    `
+    `;
 }
