@@ -7,7 +7,7 @@ console.log("Api key is:", apiKey)
 const verifyApiKey = (req, res, done) => {
     const key = req.headers['authorization'];
     if (key !== apiKey) {
-        done(feederApp.httpErrors.unauthorized())
+        done(res.httpErrors.unauthorized())
     }
     done();
 }

@@ -16,6 +16,9 @@ async function handler(req, res) {
 }
 
 const schema = {
+    headers: S.object()
+        .id('authHeader')
+        .prop('authorization', S.string().required()),
     body:
         S.object()
             .raw({ additionalProperties: false })

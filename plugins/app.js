@@ -18,9 +18,10 @@ module.exports = plugin(async function (app, options) {
 
     await app.register(FastifySSEPlugin);
     app.ready().then(() => app.swagger())
-    app.decorate("db", client)
+    app.decorate('db', client)
+    app.decorateReply('httpErrors', app.httpErrors)
 
-    app.log.debug("app loaded successfully");
+    app.log.debug('app loaded successfully');
 })
 
 module.exports.autoConfig = { name: 'app', dependencies: [] };
