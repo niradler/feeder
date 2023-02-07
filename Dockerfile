@@ -9,7 +9,7 @@ COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 RUN npm install --production --silent
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3111
 RUN chown -R node /usr/src/app
 USER node
 
