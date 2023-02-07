@@ -4,7 +4,7 @@ Consolidate alerts from multiple feeds, use the feeder `/webhook` endpoint to ad
 
 ## Usage
 
-docker-compose is the easiest way to start
+docker-compose is the easiest way to start, by default feeder will use Sqlite, you can change that easily with prisma orm.
 
 ```yml
 version: '3.4'
@@ -20,6 +20,8 @@ services:
             NODE_ENV: production
             STATIKLY_CORS_ORIGIN: localhost
             STATIKLY_GLOBAL_HELMET: false
+        volumes:
+            - ./data:/usr/src/app/prisma/data
         ports:
             - 3111:3111
 ```
@@ -61,6 +63,7 @@ Open the browser and go to localhost:3111
 ### TODO:
 
 -   socket connection should update the ui instead of requesting to refresh
--   steps ui (consolidate alerts)
+-   steps ui (consolidate alerts with groupId)
 -   docker
--   login (not sure if this is needed)
+-   login (TBD)
+-   integrations (TBD)
