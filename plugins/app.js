@@ -20,7 +20,6 @@ module.exports = plugin(async function (app, options) {
     app.ready().then(() => app.swagger())
     app.decorate("db", client)
 
-    global.feederApp = app;
     app.log.debug("app loaded successfully");
 })
 

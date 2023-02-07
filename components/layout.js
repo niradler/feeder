@@ -22,6 +22,10 @@ module.exports = ({ body }) => {
     <title>${context.title}</title>
     <link href="/public/css/daisyui.css" rel="stylesheet" type="text/css" />
     <link href="/public/css/tailwind.min.css" rel="stylesheet" type="text/css" />
+
+    <script>
+        window.isDev = ${isDev};
+    </script>
     <script src="/assets?asset=htmx.org/dist/htmx.js"></script>
     <script src="/assets?asset=htmx.org/dist/ext/sse.js"></script>
     <script src="/public/js/scripts.js" defer></script>
