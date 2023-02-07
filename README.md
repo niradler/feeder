@@ -21,7 +21,7 @@ services:
             STATIKLY_CORS_ORIGIN: localhost
             STATIKLY_GLOBAL_HELMET: false
         ports:
-            - 3111:3000
+            - 3111:3111
 ```
 
 Add some alerts:

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "nodemon -e js --exec \"npm run start\"",
-    "start": "statikly start -a plugins --level debug --port 3000",
+    "start": "statikly start -a plugins --level debug --port 3111",
     "statikly": "statikly",
     "prisma": "prisma",
     "prisma:studio": "prisma studio",
