@@ -17,6 +17,7 @@ services:
         environment:
             DATABASE_URL: 'file:./data/feeder.db'
             JWT_SECRET: '${JWT_SECRET}'
+            SESSION_SECRET: '${SESSION_SECRET}'
             FEEDER_PASSWORD: '${FEEDER_PASSWORD}'
             API_KEY: '${API_KEY}'
             NODE_ENV: production
