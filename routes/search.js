@@ -49,7 +49,7 @@ async function post(req, res) {
 }
 
 const route = {
-    methoid: "POST",
+    method: "POST",
     handler: post,
     preHandler: verifyToken
 }

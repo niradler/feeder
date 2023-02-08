@@ -16,6 +16,8 @@ services:
         restart: always
         environment:
             DATABASE_URL: 'file:./data/feeder.db'
+            JWT_SECRET: '${JWT_SECRET}'
+            FEEDER_PASSWORD: '${FEEDER_PASSWORD}'
             API_KEY: '${API_KEY}'
             NODE_ENV: production
             STATIKLY_CORS_ORIGIN: localhost

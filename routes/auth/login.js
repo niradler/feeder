@@ -2,6 +2,8 @@ const { html, htmlFragment, renderIf } = require('@statikly-stack/render')
 const { verifyPassword } = fromRoot.require('src/auth');
 const layout = fromRoot.require('components/layout');
 
+const { corsOrigin, prod } = statikly_app._config;
+
 async function get(req, res) {
     const hasError = res.flash('error').length > 0;
 
@@ -32,11 +34,11 @@ function post(req, res) {
     try {
         const token = verifyPassword(password)
         res.setCookie('feeder_token', token, {
-            //   domain: 'your.domain',
+            domain: corsOrigin[0],
             path: '/',
-            //   secure: true, // send cookie over HTTPS only
+            secure: prod,
             httpOnly: true,
-            sameSite: true // alternative CSRF protection
+            sameSite: true
         })
         res.redirect("/")
     } catch (error) {
