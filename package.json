@@ -23,6 +23,9 @@
   },
   "dependencies": {
     "@fastify/caching": "^8.2.0",
+    "@fastify/cookie": "^8.3.0",
+    "@fastify/flash": "^5.1.0",
+    "@fastify/session": "^10.1.1",
     "@fastify/swagger": "^8.3.1",
     "@prisma/client": "^4.10.0",
     "@statikly-stack/core": "^0.0.11",
@@ -31,6 +34,7 @@
     "fastify-sse-v2": "^3.0.0",
     "fluent-json-schema": "^4.0.0",
     "htmx.org": "^1.8.5",
+    "jsonwebtoken": "^9.0.0",
     "prisma": "^4.10.0"
   }
 }

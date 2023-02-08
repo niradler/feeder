@@ -1,7 +1,9 @@
 const { html, htmlFragment, renderIf } = require('@statikly-stack/render')
+const { pageSize } = require('data.json');
 const layout = fromRoot.require('components/layout');
 const { all } = fromRoot.require('components/alerts');
-const { pageSize } = require('data.json');
+const { verifyToken } = fromRoot.require('src/auth');
+
 
 const header = ({ search }) => {
     return htmlFragment`
@@ -116,4 +118,9 @@ async function get(req, res) {
     return layout({ body });
 }
 
-module.exports = { get };
+const route = {
+    handler: get,
+    preHandler: verifyToken
+}
+
+module.exports = { route };

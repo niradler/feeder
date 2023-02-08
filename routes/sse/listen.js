@@ -1,5 +1,6 @@
 const { on } = require('events')
 const { alertsEmitter } = fromRoot.require('src/events');
+const { verifyToken } = fromRoot.require('src/auth');
 const { basicAlert } = fromRoot.require('components/alerts');
 
 function get(req, res) {
@@ -18,4 +19,9 @@ function get(req, res) {
 
 }
 
-module.exports = { get };
+const route = {
+    handler: get,
+    preHandler: verifyToken
+}
+
+module.exports = { route };

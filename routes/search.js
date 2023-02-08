@@ -1,6 +1,7 @@
 const { all } = fromRoot.require('components/alerts');
 const { htmlFragment, renderIf } = require('@statikly-stack/render')
 const { pageSize } = require('data.json');
+const { verifyToken } = fromRoot.require('src/auth');
 
 async function post(req, res) {
     const alerts = await this.db.alert.findMany({
@@ -47,4 +48,10 @@ async function post(req, res) {
     `;
 }
 
-module.exports = { post };
+const route = {
+    methoid: "POST",
+    handler: post,
+    preHandler: verifyToken
+}
+
+module.exports = { route };

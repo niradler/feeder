@@ -1,14 +1,18 @@
 const { plugin } = require('@statikly-stack/core')
+const { generateSecret } = require('@statikly-stack/core/build/utils/common')
 const { FastifySSEPlugin } = require('fastify-sse-v2');
 const client = fromRoot.require('src/db/client');
 
+const sessionSecret = process.env.JWT_SESSION || generateSecret();
 
 module.exports = plugin(async function (app, options) {
     const { expiresIn = 300, serverExpiresIn = 300 } = options
     await app.register(require('@fastify/caching'), {
         expiresIn: expiresIn, serverExpiresIn
     });
-
+    await app.register(require('@fastify/cookie'), { secret: sessionSecret });
+    await app.register(require('@fastify/session'), { secret: sessionSecret, cookie: { secure: 'auto' } });
+    await app.register(require('@fastify/flash'));
     await app.register(require('@fastify/swagger'), {
         exposeRoute: true,
         swagger: {
