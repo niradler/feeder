@@ -1,5 +1,5 @@
+const isMobile = window.orientation > -1 && 'ontouchstart' in window;
 const themeKey = "FEEDER_THEME"
-
 document.querySelectorAll('#theme-options').forEach((el) => el.addEventListener('click', changeTheme));
 function changeTheme(el) {
     const selectedTheme = el.target.getAttribute('data-value');
@@ -14,7 +14,8 @@ if (theme) {
 
 function sendNotification(message) {
     const enable = checkPageStatus()
-    if (document.hidden && enable) {
+    const trigger = (isMobile && enable) || (document.hidden && enable);
+    if (trigger) {
         const notification = new Notification("Feeder: New alert", {
             icon: "https://cdn-icons-png.flaticon.com/512/2058/2058658.png",
             body: message
