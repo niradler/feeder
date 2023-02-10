@@ -104,7 +104,7 @@ async function get(req, res) {
     <div class="divider"></div>
     
     <div class="flex justify-center">
-        <div hx-ext="sse" sse-connect="/sse/listen" sse-swap="message"></div>
+        <div hx-ext="sse" sse-connect="/sse/listen" id="sse" hx-trigger="sse:message"></div>
         <progress class="progress w-56 htmx-indicator" id="search-indicator"></progress>
     </div>
     

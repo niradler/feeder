@@ -11,3 +11,44 @@ const theme = localStorage.getItem(themeKey);
 if (theme) {
     document.querySelector('html').setAttribute('data-theme', theme);
 }
+
+function sendNotification(message) {
+    const enable = checkPageStatus()
+    if (document.hidden && enable) {
+        const notification = new Notification("Feeder: New alert", {
+            icon: "https://cdn-icons-png.flaticon.com/512/2058/2058658.png",
+            body: message
+        })
+        notification.onclick = () => function () {
+            window.open(location.origin)
+        }
+    }
+}
+
+
+function checkPageStatus() {
+    if (!("Notification" in window)) {
+        console.error("This browser does not support system notifications!")
+        return false
+    }
+    else if (Notification.permission === "granted") {
+        return true
+    }
+    else if (Notification.permission !== "denied") {
+        Notification.requestPermission((permission) => {
+            if (permission === "granted") {
+                return true
+            }
+        })
+    }
+}
+
+document.body.addEventListener('htmx:load', function (evt) {
+    htmx.find('#sse').addEventListener('htmx:sseMessage', function (evt) {
+        const data = JSON.parse(evt.detail.data)
+        const el = document.createElement('div');
+        el.innerHTML = data.html;
+        htmx.find('#search-results').prepend(el);
+        sendNotification(data.alert.title)
+    });
+});

@@ -66,9 +66,6 @@ Open the browser and go to localhost:3111
 
 ### TODO:
 
--   socket connection should update the ui instead of requesting to refresh
 -   steps ui (consolidate alerts with groupId)
--   docker
--   login (TBD)
 -   integrations (TBD)
 -   filter by timestamp

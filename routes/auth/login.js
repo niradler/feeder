@@ -31,6 +31,7 @@ async function get(req, res) {
 
 function post(req, res) {
     const { password } = req.body;
+    console.info('password', { password })
     try {
         const token = verifyPassword(password)
         res.setCookie('feeder_token', token, {
@@ -40,8 +41,10 @@ function post(req, res) {
             httpOnly: true,
             sameSite: true
         })
+        console.info('verifyPassword')
         res.redirect("/")
     } catch (error) {
+        req.log.error(error)
         req.flash('error', ['password in not correct'])
         res.redirect("/auth/login")
     }

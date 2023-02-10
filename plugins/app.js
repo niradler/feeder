@@ -6,10 +6,13 @@ const client = fromRoot.require('src/db/client');
 const sessionSecret = process.env.SESSION_SECRET || generateSecret();
 
 module.exports = plugin(async function (app, options) {
-    const { expiresIn = 300, serverExpiresIn = 300 } = options
-    await app.register(require('@fastify/caching'), {
-        expiresIn: expiresIn, serverExpiresIn
-    });
+    const { expiresIn = 300, serverExpiresIn = 300, prod } = options
+    if (prod) {
+        await app.register(require('@fastify/caching'), {
+            expiresIn, serverExpiresIn
+        });
+    }
+
     await app.register(require('@fastify/cookie'), { secret: sessionSecret });
     await app.register(require('@fastify/session'), { secret: sessionSecret, cookie: { secure: 'auto' } });
     await app.register(require('@fastify/flash'));

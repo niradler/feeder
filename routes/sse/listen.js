@@ -11,7 +11,7 @@ function get(req, res) {
                 yield {
                     id: event.type,
                     type: event.type,
-                    data: "<h1>Refresh to get latest</h1>",
+                    data: JSON.stringify({ alert: event.data, html: basicAlert(event.data) }),
                 };
             }
         })()
