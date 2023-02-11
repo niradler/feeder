@@ -4,7 +4,40 @@ const { verifyApiKey } = fromRoot.require('src/auth');
 
 async function handler(req, res) {
     try {
-        const alert = await this.db.alert.create({ data: req.body })
+        let { tags, ...newAlert } = req.body;
+        tags = tags || [];
+
+        if (tags.length > 0) {
+            const exists = await this.db.tag.findMany({
+                where: {
+                    text: {
+                        in: tags
+                    }
+                }
+            })
+            const existsText = exists.map(tag => tag.text);
+            tags = tags.filter(tag => !existsText.includes(tag)).map(tag => ({ text: tag }))
+            console.log({ tags })
+            const createdTags = await this.db.tag.create({
+                data: tags,
+            })
+            newAlert.tags = { connect: [...exists, createdTags] }
+        }
+
+        const alert = await this.db.alert.create({
+            data: newAlert
+        })
+        // await prisma.brand.create({
+        //     data: {
+        //       name: "Apple",
+        //       slug: "apple",
+        //       categories: {
+        //         connect: {
+        //           id: "ckzr32wlx0000wtt1lrhj85e1",
+        //         },
+        //       },
+        //     },
+        //   });
         alertsEmitter.emit('create', { type: 'create', data: alert })
     } catch (error) {
         req.log.error(error)
@@ -31,7 +64,7 @@ const schema = {
             .prop('level', S.string())
             .prop('action', S.string())
             .prop('actionMethod', S.string().enum(['GET', 'get', 'post', 'POST']))
-            .prop('tags', S.string())
+            .prop('tags', S.array(S.string()))
 }
 
 const route = {

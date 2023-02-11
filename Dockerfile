@@ -6,11 +6,12 @@ USER root
 RUN apk add --no-cache libc6-compat openssl
 
 COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN npm i -g npm
 RUN npm install --production --silent
 COPY . .
 
-RUN mkdir /data
-RUN chown -R node /data
+RUN mkdir data
+RUN chown -R node data
 RUN chown -R node /usr/src/app
 USER node
 
