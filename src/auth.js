@@ -11,7 +11,7 @@ console.log("Password is:", Password)
 const verifyApiKey = (req, res, done) => {
     const key = req.headers['authorization'];
     if (key !== apiKey) {
-        done(res.httpErrors.unauthorized())
+        done(res.httpErrors().unauthorized())
     }
     done();
 }

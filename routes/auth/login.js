@@ -2,8 +2,6 @@ const { html, htmlFragment, renderIf } = require('@statikly-stack/render')
 const { verifyPassword } = fromRoot.require('src/auth');
 const layout = fromRoot.require('components/layout');
 
-const { corsOrigin, prod } = statikly_app._config;
-
 async function get(req, res) {
     const hasError = res.flash('error').length > 0;
 
@@ -30,6 +28,7 @@ async function get(req, res) {
 }
 
 function post(req, res) {
+    const { corsOrigin, prod } = req._config;
     const { password } = req.body;
     console.info('password', { password })
     try {

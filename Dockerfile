@@ -10,6 +10,7 @@ RUN npm install --production --silent
 COPY . .
 
 EXPOSE 3111
+RUN chown -R node /data
 RUN chown -R node /usr/src/app
 USER node
 
