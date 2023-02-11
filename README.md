@@ -2,6 +2,8 @@
 
 Consolidate alerts from multiple feeds, use the feeder `/webhook` endpoint to add alerts to the feed.
 
+[blog post](https://blog.niradler.com/consolidate-alerts-with-feeder)
+
 ## Usage
 
 docker-compose is the easiest way to start, by default feeder will use Sqlite, you can change that easily with prisma orm.

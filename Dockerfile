@@ -9,11 +9,12 @@ COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 RUN npm install --production --silent
 COPY . .
 
-EXPOSE 3111
 RUN mkdir /data
 RUN chown -R node /data
 RUN chown -R node /usr/src/app
 USER node
+
+EXPOSE 3111
 
 ENTRYPOINT [ ]
 
