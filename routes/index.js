@@ -30,7 +30,7 @@ const header = ({ search }) => {
     `
 }
 
-const getAlerts = async (db, { page, search, isHx }) => {
+const getAlerts = async (db, { page, search, isHx, tagId }) => {
     let skip = (page - 1) * pageSize;
     let take = pageSize;
     if (!isHx) {
@@ -44,6 +44,20 @@ const getAlerts = async (db, { page, search, isHx }) => {
                 timestamp: 'desc',
             },
         ],
+        include: {
+            tags: true,
+        }
+    }
+
+    if (tagId) {
+        findOptions.where = {
+            tags: {
+                every: {
+                    id: tagId
+                }
+
+            }
+        }
     }
 
     if (search) {
@@ -56,11 +70,6 @@ const getAlerts = async (db, { page, search, isHx }) => {
                 },
                 {
                     description: {
-                        contains: search
-                    }
-                },
-                {
-                    tags: {
                         contains: search
                     }
                 }
@@ -76,10 +85,11 @@ const getAlerts = async (db, { page, search, isHx }) => {
 
 async function get(req, res) {
     const isHx = req.headers['hx-request'] === 'true';
-    let { page, search } = req.query;
+    let { page, search, tagId } = req.query;
+    console.log({ tagId })
     search = search || '';
     page = page ? Number(page) : 1
-    const alerts = await getAlerts(this.db, { page, search, isHx })
+    const alerts = await getAlerts(this.db, { page, search, isHx, tagId })
     const searchResults = htmlFragment`
     ${all({ alerts })}
     ${renderIf(alerts.length === pageSize,

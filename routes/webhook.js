@@ -2,6 +2,8 @@ const S = require('fluent-json-schema')
 const { alertsEmitter } = fromRoot.require('src/events');
 const { verifyApiKey } = fromRoot.require('src/auth');
 
+// TODO: tags insert refactor is needed, due to prisma/sqlite limitation
+
 async function handler(req, res) {
     try {
         let { tags, ...newAlert } = req.body;
@@ -9,6 +11,9 @@ async function handler(req, res) {
 
         if (tags.length > 0) {
             const exists = await this.db.tag.findMany({
+                select: {
+                    text: true
+                },
                 where: {
                     text: {
                         in: tags
@@ -17,30 +22,25 @@ async function handler(req, res) {
             })
             const existsText = exists.map(tag => tag.text);
             tags = tags.filter(tag => !existsText.includes(tag)).map(tag => ({ text: tag }))
-            console.log({ tags })
-            const createdTags = await this.db.tag.create({
-                data: tags,
-            })
-            newAlert.tags = { connect: [...exists, createdTags] }
-        }
+            let createdTags = []
+            if (tags.length > 0) {
+                createdTags = await Promise.all(tags.map(tag => this.db.tag.create({
+                    data: tag,
+                    select: {
+                        text: true
+                    },
+                })))
 
+            }
+            newAlert.tags = { connect: [...exists, ...createdTags] }
+        }
         const alert = await this.db.alert.create({
             data: newAlert
         })
-        // await prisma.brand.create({
-        //     data: {
-        //       name: "Apple",
-        //       slug: "apple",
-        //       categories: {
-        //         connect: {
-        //           id: "ckzr32wlx0000wtt1lrhj85e1",
-        //         },
-        //       },
-        //     },
-        //   });
+
         alertsEmitter.emit('create', { type: 'create', data: alert })
     } catch (error) {
-        req.log.error(error)
+        req.log.error(`webhook error: ${error.message}`);
         res.status(500)
         return { status: 'failed' }
     }
