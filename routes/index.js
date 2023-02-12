@@ -1,14 +1,19 @@
-const { html, htmlFragment, renderIf } = require('@statikly-stack/render')
+const { html, htmlFragment, renderIf, renderList } = require('@statikly-stack/render')
 const { pageSize } = require('data.json');
 const layout = fromRoot.require('components/layout');
 const { all } = fromRoot.require('components/alerts');
 const { verifyToken } = fromRoot.require('src/auth');
 
-
-const header = ({ search }) => {
+const header = ({ search, tags }) => {
     return htmlFragment`
         <div class="flex justify-center">
-            <div class="form-control">
+            <div class="form-control mr-5">
+                <select class="select select-bordered w-full max-w-xs" hx-get="/" hx-target="#search-results" hx-indicator=".htmx-indicator" name="tagId">
+                <option disabled selected>Tags</option>
+                ${renderList(tags, (tag) => htmlFragment`<option value="${tag.id}">${tag.text}</option>`)}
+                </select>
+            </div>          
+            <div class="form-control mr-5">
                 <div class="input-group">
                     <input id="search-input" class="input input-bordered" type="search" name="search"
                         placeholder="Begin Typing To Search..." 
@@ -25,6 +30,12 @@ const header = ({ search }) => {
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     </button>
                 </div>
+            </div>
+            <div class="form-control mr-5">
+                <input name="start" type="datetime-local" class="input input-bordered" placeholder="Select date start" hx-push-url="true">
+            </div>            
+            <div class="form-control mr-5">
+                <input name="end" type="datetime-local" class="input input-bordered" placeholder="Select date end" hx-push-url="true">
             </div>
         </div>
     `
@@ -86,10 +97,21 @@ const getAlerts = async (db, { page, search, isHx, tagId }) => {
 async function get(req, res) {
     const isHx = req.headers['hx-request'] === 'true';
     let { page, search, tagId } = req.query;
-    console.log({ tagId })
     search = search || '';
     page = page ? Number(page) : 1
     const alerts = await getAlerts(this.db, { page, search, isHx, tagId })
+
+    let qs = {
+        page,
+        search,
+        tagId
+    };
+    Object.keys(qs).forEach((key) => {
+        if (typeof qs[key] === 'undefined' || qs[key] === '') {
+            delete qs[key];
+        }
+    });
+    const urlParams = new URLSearchParams(qs).toString()
     const searchResults = htmlFragment`
     ${all({ alerts })}
     ${renderIf(alerts.length === pageSize,
@@ -104,13 +126,20 @@ async function get(req, res) {
         if (alerts.length === 0) {
             return res.notFound()
         }
-        res.header('HX-Push', `/?search=${search}&page=${page}`)
+        res.header('HX-Push', `/?${urlParams}`)
         return searchResults;
     }
 
+    const tags = await this.db.tag.findMany({
+        select: {
+            id: true,
+            text: true
+        },
+    })
+
     const body = () =>
         html`
-    ${header({ search })}
+    ${header({ search, tags })}
     <div class="divider"></div>
     
     <div class="flex justify-center">
