@@ -18,6 +18,16 @@ const textWithLimit = (text, limit) => {
 `
 }
 
+const formatField = (type, value) => {
+    switch (type) {
+        case 'createdAt':
+        case 'timestamp':
+            return dayjs(value).format()
+
+    }
+
+    return value;
+}
 
 const groupAlert = (alert) => {
     return htmlFragment`
@@ -66,7 +76,7 @@ const basicAlert = (alert) => {
         </div>
         <div class="collapse-content">
             <p>${alert.description}</p>
-            ${renderList(Object.keys(alert).filter(key => alert[key] && key != 'tags' && key != 'description'), (key) => htmlFragment`<span class="badge">${key}=${alert[key]}</span>`)}            
+            ${renderList(Object.keys(alert).filter(key => alert[key] && key != 'tags' && key != 'description'), (key) => htmlFragment`<span class="badge">${key}=${formatField(key, alert[key])}</span>`)}            
             ${renderIf(alert.tags, (tags) => tags.map(tag => htmlFragment`<a href="/?tagId=${tag.id}"><span id="${tag.id}" class="badge">tag=${tag.text}</span></a>`))
         }
         </div >
@@ -76,7 +86,7 @@ const basicAlert = (alert) => {
 
 const empty = () => {
     return htmlFragment`
-    < div class="alert alert-error shadow-lg mt-3" >
+    <div class="alert alert-error shadow-lg mt-3">
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                 class="stroke-info flex-shrink-0 w-6 h-6">
