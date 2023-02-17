@@ -132,4 +132,4 @@ dist
 .env*
 public/bundle
 
-**/data/**.db*
+**/data/**

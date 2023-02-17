@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+    feeder:
+        container_name: feeder
+        image: niradler/feeder
+        restart: always
+        environment:
+            DATABASE_URL: 'file:./data/feeder.db'
+            JWT_SECRET: 'JWT_SECRET'
+            SESSION_SECRET: 'SESSION_SECRET'
+            FEEDER_PASSWORD: 'FEEDER_PASSWORD'
+            API_KEY: 'API_KEY'
+            NODE_ENV: production
+            STATIKLY_CORS_ORIGIN: localhost
+            STATIKLY_GLOBAL_HELMET: false
+        volumes:
+            - ./data:/usr/src/app/prisma/data
+        ports:
+            - 3111:3111

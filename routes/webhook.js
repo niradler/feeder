@@ -2,42 +2,42 @@ const S = require('fluent-json-schema')
 const { alertsEmitter } = fromRoot.require('src/events');
 const { verifyApiKey } = fromRoot.require('src/auth');
 
-// TODO: tags insert refactor is needed, due to prisma/sqlite limitation
+async function createAlert(db, body) {
+    let { tags = [], ...newAlert } = body;
+
+    let exists, existsText;
+    if (tags.length > 0) {
+        exists = await db.tag.findMany({
+            select: {
+                text: true
+            },
+            where: {
+                text: {
+                    in: tags
+                }
+            }
+        })
+        existsText = exists.map(tag => tag.text);
+        tags = tags.filter(tag => !existsText.includes(tag)).map(text => ({ text }))
+    }
+
+    const alert = await db.alert.create({
+        data: {
+            ...newAlert,
+            tags: {
+                connect: exists,
+                create: tags,
+
+            },
+        },
+    })
+
+    return alert;
+}
 
 async function handler(req, res) {
     try {
-        let { tags, ...newAlert } = req.body;
-        tags = tags || [];
-
-        if (tags.length > 0) {
-            const exists = await this.db.tag.findMany({
-                select: {
-                    text: true
-                },
-                where: {
-                    text: {
-                        in: tags
-                    }
-                }
-            })
-            const existsText = exists.map(tag => tag.text);
-            tags = tags.filter(tag => !existsText.includes(tag)).map(tag => ({ text: tag }))
-            let createdTags = []
-            if (tags.length > 0) {
-                createdTags = await Promise.all(tags.map(tag => this.db.tag.create({
-                    data: tag,
-                    select: {
-                        text: true
-                    },
-                })))
-
-            }
-            newAlert.tags = { connect: [...exists, ...createdTags] }
-        }
-        const alert = await this.db.alert.create({
-            data: newAlert
-        })
-
+        const alert = await createAlert(this.db, req.body)
         alertsEmitter.emit('create', { type: 'create', data: alert })
     } catch (error) {
         req.log.error(`webhook error: ${error.message}`);

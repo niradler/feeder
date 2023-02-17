@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+    feeder:
+        image: feeder
+        depends_on:
+            - postgres
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        env_file:
+            - .env
+        environment:
+            DATABASE_URL: 'postgresql://postgres:test@postgres:5432/feeder?schema=public'
+        ports:
+            - 3111:3111
+            - 9229:9229
+    postgres:
+        image: postgres:latest
+        container_name: postgres
+        restart: always
+        volumes:
+            - ./data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: '${DB_POSTGRESDB_PASSWORD}'
+        ports:
+            - '5432:5432'
