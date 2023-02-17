@@ -28,7 +28,8 @@ async function get(req, res) {
 }
 
 function post(req, res) {
-    const { corsOrigin, prod } = req._statiklyApp()._config;
+    const { corsOrigin, prod } = this._config;
+    console.log("post", { corsOrigin, prod })
     const { password } = req.body;
     try {
         const token = verifyPassword(password)
