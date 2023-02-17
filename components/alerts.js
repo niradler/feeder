@@ -18,6 +18,16 @@ const textWithLimit = (text, limit) => {
 `
 }
 
+const formatField = (type, value) => {
+    switch (type) {
+        case 'createdAt':
+        case 'timestamp':
+            return dayjs(value).format()
+
+    }
+
+    return value;
+}
 
 const groupAlert = (alert) => {
     return htmlFragment`
@@ -66,27 +76,28 @@ const basicAlert = (alert) => {
         </div>
         <div class="collapse-content">
             <p>${alert.description}</p>
-            ${renderList(Object.keys(alert).filter(key => alert[key] && key != 'tags' && key != 'description'), (key) => htmlFragment`<span class="badge">${key}=${alert[key]}</span>`)}            
-            ${renderIf(alert.tags, (tags) => tags.split(',').map(tag => htmlFragment`<span class="badge">tag=${tag}</span>`))}
-        </div>
-    </div>
+            ${renderList(Object.keys(alert).filter(key => alert[key] && key != 'tags' && key != 'description'), (key) => htmlFragment`<span class="badge">${key}=${formatField(key, alert[key])}</span>`)}            
+            ${renderIf(alert.tags, (tags) => tags.map(tag => htmlFragment`<a href="/?tagId=${tag.id}"><span id="${tag.id}" class="badge">tag=${tag.text}</span></a>`))
+        }
+        </div >
+    </div >
     `
 }
 
 const empty = () => {
     return htmlFragment`
-        <div class="alert alert-error shadow-lg mt-3">
+    <div class="alert alert-error shadow-lg mt-3">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                class="stroke-info flex-shrink-0 w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
             <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    class="stroke-info flex-shrink-0 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <div>
-                    <h3 class="font-bold">No messages</h3>
-                </div>
+                <h3 class="font-bold">No messages</h3>
             </div>
         </div>
+        </div >
     `
 }
 

@@ -10,16 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Alert {
-  id String @id @default(uuid())
-  title String
-  description String?
-  timestamp DateTime? @default(now())
-  createdAt DateTime? @default(now())
-  groupId String?
-  level String?
-  action String?
+  id           String    @id @unique @default(uuid())
+  title        String
+  description  String?
+  timestamp    DateTime? @default(now())
+  createdAt    DateTime? @default(now())
+  groupId      String?
+  level        String?
+  action       String?
   actionMethod String?
-  tags String?
+  tags         Tag[]
+}
+
+model Tag {
+  id        String    @id @unique @default(uuid())
+  createdAt DateTime? @default(now())
+  text      String    @unique
+  alerts    Alert[]
 }
