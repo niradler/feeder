@@ -3,7 +3,7 @@ const { generateSecret } = require('@statikly-stack/core/build/utils/common')
 const { FastifySSEPlugin } = require('fastify-sse-v2');
 const client = fromRoot.require('src/db/client');
 
-const sessionSecret = process.env.SESSION_SECRET || generateSecret();
+const { sessionSecret } = require('src/config');
 
 module.exports = plugin(async function (app, options) {
     const { expiresIn = 300, serverExpiresIn = 300, prod } = options

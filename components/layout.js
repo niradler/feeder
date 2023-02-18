@@ -1,11 +1,12 @@
 const { html } = require('@statikly-stack/render')
 const footer = require('./footer')
 const header = require('./header')
-const context = require('data.json');
+const filtersModal = require('./filtersModal')
+const context = require('config');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-module.exports = ({ body }) => {
+module.exports = ({ body, tags, tagId }) => {
     return html`
 <html lang="en" data-theme="${context.defaultTheme}">
 
@@ -28,6 +29,8 @@ module.exports = ({ body }) => {
     </script>
     <script src="/assets?asset=htmx.org/dist/htmx.js"></script>
     <script src="/assets?asset=htmx.org/dist/ext/sse.js"></script>
+    <script src="/assets?asset=store2/dist/store2.min.js"></script>
+
     <script src="/public/js/scripts.js" defer></script>
     <script src="/public/js/debug.js" defer></script>
 </head>
@@ -38,6 +41,8 @@ module.exports = ({ body }) => {
         <main class="">${body(context)}</main>
         ${footer(context)}
     </div>
+
+    ${filtersModal({ tags, tagId })}
 </body>
 
 </html>

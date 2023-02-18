@@ -1,40 +1,16 @@
 const { all } = fromRoot.require('components/alerts');
 const { htmlFragment, renderIf } = require('@statikly-stack/render')
-const { pageSize } = require('data.json');
+const { pageSize } = require('src/config');
 const { verifyToken } = fromRoot.require('src/auth');
+const { reqToQuery, queryToAlerts, buildQuery } = require('src/actions')
 
 async function post(req, res) {
-    const alerts = await this.db.alert.findMany({
-        take: pageSize,
-        orderBy: [
-            {
-                timestamp: 'desc',
-            },
-        ],
-        where: {
-            OR: [
-                {
-                    title: {
-                        contains: req.body.search
-                    }
-                },
-                {
-                    description: {
-                        contains: req.body.search
-                    }
-                },
-                {
-                    tags: {
-                        contains: req.body.search
-                    }
-                }
-            ]
+    const query = reqToQuery(req)
 
-        }
-    })
+    const alerts = await queryToAlerts(this.db, query)
 
     res.type('text/html');
-    res.header('HX-Push', `/?search=${req.body.search}&page=1`)
+    res.header('HX-Push', `/?${buildQuery(query)}`)
 
     return htmlFragment`
     ${all({ alerts })}

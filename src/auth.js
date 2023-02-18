@@ -1,12 +1,6 @@
-const { generateSecret } = require('@statikly-stack/core/build/utils/common')
 const jwt = require('jsonwebtoken');
 
-const apiKey = process.env.API_KEY || generateSecret();
-const JWTSecret = process.env.JWT_SECRET || generateSecret();
-const Password = process.env.FEEDER_PASSWORD || generateSecret();
-
-console.log("Api key is:", apiKey)
-console.log("Password is:", Password)
+const { apiKey, Password, JWTSecret } = require('src/config');
 
 const verifyApiKey = (req, res, done) => {
     const key = req.headers['authorization'];

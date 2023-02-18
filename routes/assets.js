@@ -1,5 +1,5 @@
 
-const assets = ['htmx.org/dist/htmx.js', 'htmx.org/dist/ext/sse.js']
+const assets = ['htmx.org/dist/htmx.js', 'htmx.org/dist/ext/sse.js', 'store2/dist/store2.min.js']
 
 async function get(req, res) {
     const asset = req.query.asset

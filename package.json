@@ -35,6 +35,7 @@
     "fluent-json-schema": "^4.0.0",
     "htmx.org": "^1.8.5",
     "jsonwebtoken": "^9.0.0",
-    "prisma": "^4.10.1"
+    "prisma": "^4.10.1",
+    "store2": "^2.14.2"
   }
 }

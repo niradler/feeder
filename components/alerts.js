@@ -77,7 +77,7 @@ const basicAlert = (alert) => {
         <div class="collapse-content">
             <p>${alert.description}</p>
             ${renderList(Object.keys(alert).filter(key => alert[key] && key != 'tags' && key != 'description'), (key) => htmlFragment`<span class="badge">${key}=${formatField(key, alert[key])}</span>`)}            
-            ${renderIf(alert.tags, (tags) => tags.map(tag => htmlFragment`<a href="/?tagId=${tag.id}"><span id="${tag.id}" class="badge">tag=${tag.text}</span></a>`))
+            ${renderIf(alert.tags, (tags) => tags.map(tag => htmlFragment`<a href="/?tagId=${tag.id}"><span id="${tag.id}" class="badge">${tag.text}</span></a>`))
         }
         </div >
     </div >

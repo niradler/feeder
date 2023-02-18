@@ -1,8 +1,8 @@
-const { html } = require('@statikly-stack/render')
+const { htmlFragment } = require('@statikly-stack/render')
 
 
 module.exports = () => {
-    return html`
+    return htmlFragment`
     <footer class="footer footer-center p-10 bg-base-200 text-base-content rounded">
         <div>
             <p>Copyright © 2023 - All right reserved, the code is available on github <a

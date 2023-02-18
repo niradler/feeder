@@ -1,30 +1,13 @@
-const { htmlFragment, renderIf, renderList } = require('@statikly-stack/render')
+const { htmlFragment, renderIf } = require('@statikly-stack/render')
 
-const sortOptions = () => {
+const alertHeader = ({ search }) => {
     return htmlFragment`
-    <div class="form-control mr-5">
-        <input name="start" type="datetime-local" class="input input-bordered" placeholder="Select date start" hx-push-url="true" hx-get hx-target="#search-results" 
-                hx-indicator=".htmx-indicator">
-    </div>            
-    <div class="form-control mr-5">
-        <input name="end" type="datetime-local" class="input input-bordered" placeholder="Select date end" hx-push-url="true" hx-get hx-target="#search-results" 
-                hx-indicator=".htmx-indicator">
-    </div>
-    `
-}
-
-const alertHeader = ({ search, tags, tagId }) => {
-    return htmlFragment`
-        <div class="flex justify-center">
-            <div class="form-control mr-5">
-                <select class="select select-bordered w-full max-w-xs" hx-get="/" hx-target="#search-results" hx-indicator=".htmx-indicator" name="tagId">
-                <option disabled ${renderIf(!tagId, 'selected')}>Tags</option>
-                ${renderList(tags, (tag) => htmlFragment`<option ${renderIf(tag.id == tagId, 'selected')} value="${tag.id}">${tag.text}</option>`)}
-                </select>
-            </div>          
+        <div class="flex justify-center">       
             <div class="form-control mr-5">
                 <div class="input-group">
                     <input id="search-input" class="input input-bordered" type="search" name="search"
+                        hx-include="*"
+                        hx-params="*"
                         placeholder="Begin Typing To Search..." 
                         hx-post="/search" 
                         hx-trigger="keyup changed delay:500ms, search"
