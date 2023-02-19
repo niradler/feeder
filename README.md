@@ -12,12 +12,12 @@ docker-compose is the easiest way to start, by default feeder will use Sqlite, y
 version: '3.4'
 
 services:
-    niradlercom:
+    feeder:
         container_name: feeder
         image: niradler/feeder
         restart: always
         environment:
-            DATABASE_URL: 'file:./data/feeder.db'
+            DATABASE_URL: 'postgresql://postgres:${DB_POSTGRESDB_PASSWORD}@postgres:5432/feeder?schema=public'
             JWT_SECRET: '${JWT_SECRET}'
             SESSION_SECRET: '${SESSION_SECRET}'
             FEEDER_PASSWORD: '${FEEDER_PASSWORD}'
@@ -29,6 +29,17 @@ services:
             - ./data:/usr/src/app/prisma/data
         ports:
             - 3111:3111
+    postgres:
+        image: postgres:latest
+        container_name: postgres
+        restart: always
+        volumes:
+            - ./data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: '${DB_POSTGRESDB_PASSWORD}'
+        ports:
+            - '5432:5432'
 ```
 
 Add some alerts:
