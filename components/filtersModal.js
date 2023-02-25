@@ -23,7 +23,7 @@ module.exports = ({ tags, tagId }) => {
         <div class="py-5">
         <div class="form-control">
                 <select class="select select-bordered w-full max-w-xs" hx-get="/" hx-target="#search-results" hx-indicator=".htmx-indicator" name="tagId">
-                <option disabled ${renderIf(!tagId, 'selected')}>Tags</option>
+                <option disabled ${renderIf(!tagId, 'selected')} value=''>Tags</option>
                 ${renderList(tags, (tag) => htmlFragment`<option ${renderIf(tag.id == tagId, 'selected')} value="${tag.id}">${tag.text}</option>`)}
                 </select>
             </div>   

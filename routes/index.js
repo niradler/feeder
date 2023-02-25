@@ -4,21 +4,22 @@ const layout = fromRoot.require('components/layout');
 const { all } = fromRoot.require('components/alerts');
 const { alertHeader } = fromRoot.require('components/alertHeader');
 const { verifyToken } = fromRoot.require('src/auth');
-const { reqToQuery, queryToAlerts, buildQuery } = require('src/actions')
+const { reqToQuery, queryToAlerts, buildQuery, isHxReq } = require('src/actions')
 
 
 async function get(req, res) {
     res.type('text/html');
-    const query = reqToQuery(req)
-    const { page, isHx, search, tagId } = query
-    const alerts = await queryToAlerts(this.db, query)
+    const query = reqToQuery(req);
+    const isHx = isHxReq(req);
+    const { page, search, tagId } = query;
+    const alerts = await queryToAlerts(this.db, query);
 
     const searchResults = htmlFragment`
     ${all({ alerts })}
     ${renderIf(alerts.length >= pageSize,
         htmlFragment`
         <div class="flex justify-center" id="more-results">
-        <button class="btn" hx-get="/?page=${page + 1}" hx-trigger="click" hx-target="#more-results"
+        <button class="btn" hx-get="/?${buildQuery({ ...query, page: page + 1 })}" hx-trigger="click" hx-target="#more-results"
             hx-swap="outerHTML">Load More</button>
         </div>
     `)}`;

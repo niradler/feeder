@@ -3,16 +3,14 @@ const { pageSize } = require('src/config');
 const isHxReq = (req) => req.headers['hx-request'] === 'true';
 
 const reqToQuery = (req) => {
-    const isHx = isHxReq(req)
     let { page, search, tagId, start, end } = req.body || req.query;
     search = search || '';
     page = page ? Number(page) : 1
 
-    return { isHx, page, search, tagId, start, end }
+    return { page, search, tagId, start, end }
 }
 
 const buildQuery = (qs = {}) => {
-    delete qs.isHx
     Object.keys(qs).forEach((key) => {
         if (typeof qs[key] === 'undefined' || qs[key] === '') {
             delete qs[key];

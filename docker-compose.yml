@@ -16,8 +16,10 @@ services:
             STATIKLY_GLOBAL_HELMET: false
         volumes:
             - ./data:/usr/src/app/prisma/data
+        depends_on:
+            - postgres
         ports:
-            - 3111:3111
+            - 3112:3111
     postgres:
         image: postgres:latest
         container_name: postgres
@@ -29,3 +31,24 @@ services:
             POSTGRES_PASSWORD: '${DB_POSTGRESDB_PASSWORD}'
         ports:
             - '5432:5432'
+    #optional admin panel with directus
+    feeder-admin:
+        container_name: feeder-admin
+        image: directus/directus:latest
+        ports:
+            - 3113:8055
+        depends_on:
+            - postgres
+        environment:
+            KEY: '${directus_key}'
+            SECRET: '${directus_secret}'
+
+            DB_CLIENT: 'pg'
+            DB_HOST: 'postgres'
+            DB_PORT: '5432'
+            DB_DATABASE: 'feeder'
+            DB_USER: 'postgres'
+            DB_PASSWORD: '${DB_POSTGRESDB_PASSWORD}'
+
+            ADMIN_EMAIL: '${ADMIN_EMAIL}'
+            ADMIN_PASSWORD: '${ADMIN_PASSWORD}'
